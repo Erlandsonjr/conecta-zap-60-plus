@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Painel administrativo do projeto Conecta-Zap 60+">
+  <title>{{ page_title }} · Conecta-Zap 60+</title>
+  <link rel="stylesheet" href="{{ url_for('static', path='css/styles.css') }}">
+  <script defer src="{{ url_for('static', path='js/app.js') }}"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="/admin" aria-label="Conecta-Zap 60+, página inicial">
+        <span class="brand-mark" aria-hidden="true">CZ</span>
+        <span><strong>Conecta-Zap 60+</strong><small>Segurança e autonomia digital</small></span>
+      </a>
+      <nav aria-label="Navegação principal">
+        <a href="/admin" {% if request.url.path == '/admin' %}aria-current="page"{% endif %}>Visão geral</a>
+        <a href="/admin/participants" {% if '/participants' in request.url.path %}aria-current="page"{% endif %}>Participantes</a>
+        <a href="/admin/pills" {% if '/pills' in request.url.path %}aria-current="page"{% endif %}>Pílulas</a>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content" class="container page">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="site-footer">
+    <div class="container">Protótipo acadêmico · Não use dados reais sem consentimento e controles adequados.</div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">Conteúdo educativo</p><h1>As 10 pílulas</h1><p>Mensagens curtas, práticas e organizadas em uma sequência progressiva.</p></div>
+</section>
+<section class="pill-grid">
+{% for pill in pills %}
+  <article class="pill-card">
+    <div class="pill-card-head"><span>{{ "%02d"|format(pill.order_number) }}</span><span class="badge {{ 'active' if pill.active else 'neutral' }}">{{ "Ativa" if pill.active else "Inativa" }}</span></div>
+    <h2>{{ pill.title }}</h2>
+    <p><strong>Objetivo</strong>{{ pill.objective }}</p>
+    <p><strong>Mensagem</strong>{{ pill.message }}</p>
+    <div class="callout"><strong>Atividade</strong>{{ pill.call_to_action }}</div>
+    <small>Resposta esperada: {{ pill.expected_answer }}</small>
+  </article>
+{% endfor %}
+</section>
+{% endblock %}

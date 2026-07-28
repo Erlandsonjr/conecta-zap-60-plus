@@ -1,0 +1,92 @@
+[
+  {
+    "order_number": 1,
+    "title": "Deixe o celular mais fácil de usar",
+    "objective": "Ajudar a pessoa participante a ajustar o celular para enxergar e ouvir melhor.",
+    "message": "Você pode aumentar o tamanho das letras, o brilho e o volume nas configurações do celular. Faça um ajuste de cada vez e escolha o que ficar mais confortável.",
+    "call_to_action": "Abra as configurações de tela e aumente um pouco o tamanho da letra. Depois responda: CONSEGUI ou PRECISO DE AJUDA.",
+    "expected_answer": "CONSEGUI ou PRECISO DE AJUDA",
+    "image_filename": "infografico-01.png"
+  },
+  {
+    "order_number": 2,
+    "title": "Entenda sua conexão com a internet",
+    "objective": "Diferenciar Wi-Fi de dados móveis e incentivar o uso consciente da conexão.",
+    "message": "O símbolo do Wi-Fi mostra que o celular usa uma rede próxima. Sem Wi-Fi, ele pode usar os dados móveis da operadora. Vídeos e chamadas consomem mais internet.",
+    "call_to_action": "Olhe a parte de cima da tela e identifique se aparece o símbolo do Wi-Fi. Responda: WIFI ou DADOS.",
+    "expected_answer": "WIFI ou DADOS",
+    "image_filename": "infografico-02.png"
+  },
+  {
+    "order_number": 3,
+    "title": "Envie mensagens e áudios",
+    "objective": "Praticar o envio consciente de texto e áudio pelo WhatsApp.",
+    "message": "Antes de enviar, confira o nome e a foto da conversa. Para mandar um áudio, segure o microfone, fale com calma e solte quando terminar.",
+    "call_to_action": "Envie um áudio curto dizendo: Olá, estou praticando com segurança.",
+    "expected_answer": "Áudio ou confirmação da atividade",
+    "image_filename": "infografico-03.png"
+  },
+  {
+    "order_number": 4,
+    "title": "Envie fotos com segurança",
+    "objective": "Orientar sobre privacidade antes do compartilhamento de imagens.",
+    "message": "Uma foto pode mostrar documentos, endereço, placas ou pessoas ao fundo. Observe toda a imagem antes de enviar e confirme quem vai recebê-la.",
+    "call_to_action": "Pense em uma foto que você não publicaria. Responda com uma palavra que explique o motivo.",
+    "expected_answer": "Resposta livre sobre privacidade",
+    "image_filename": "infografico-04.png"
+  },
+  {
+    "order_number": 5,
+    "title": "Reconheça mensagens suspeitas",
+    "objective": "Apresentar sinais comuns de golpes e tentativas de fraude.",
+    "message": "Desconfie de mensagens com muita pressa, promessas de prêmio, pedido de dinheiro ou número desconhecido fingindo ser familiar. Golpistas tentam impedir que você pense.",
+    "call_to_action": "Se uma mensagem pedir dinheiro com urgência, o que você faz primeiro? Responda em poucas palavras.",
+    "expected_answer": "Confirmar por outro meio ou pedir ajuda",
+    "image_filename": "infografico-05.png"
+  },
+  {
+    "order_number": 6,
+    "title": "Cuidado antes de clicar",
+    "objective": "Criar o hábito de verificar links antes de abri-los.",
+    "message": "Links falsos podem parecer verdadeiros. Não clique por impulso. Confira quem enviou, leia o endereço e, na dúvida, procure o site ou aplicativo oficial.",
+    "call_to_action": "Complete a frase: Antes de clicar, eu vou...",
+    "expected_answer": "Verificar, pensar ou pedir ajuda",
+    "image_filename": "infografico-06.png"
+  },
+  {
+    "order_number": 7,
+    "title": "Proteja suas senhas e códigos",
+    "objective": "Reforçar que senhas e códigos de verificação são pessoais.",
+    "message": "Senha e código recebido por mensagem são como a chave da sua casa: não devem ser compartilhados. Bancos e serviços sérios não pedem sua senha pelo WhatsApp.",
+    "call_to_action": "Responda VERDADEIRO ou FALSO: posso enviar meu código de confirmação para alguém que diz ser do banco.",
+    "expected_answer": "FALSO",
+    "image_filename": "infografico-07.png"
+  },
+  {
+    "order_number": 8,
+    "title": "Faça Pix com segurança",
+    "objective": "Ensinar verificações simples antes de confirmar uma transferência Pix.",
+    "message": "Antes de confirmar um Pix, confira com calma o nome de quem recebe, o valor e a instituição. Se alguém pressionar você, pare a operação.",
+    "call_to_action": "Quais duas informações você deve conferir antes de confirmar um Pix?",
+    "expected_answer": "Nome do recebedor e valor",
+    "image_filename": "infografico-08.png"
+  },
+  {
+    "order_number": 9,
+    "title": "Conheça os serviços públicos digitais",
+    "objective": "Incentivar o acesso seguro a serviços públicos em canais oficiais.",
+    "message": "Serviços públicos podem ser acessados por aplicativos e sites oficiais, como o gov.br. Baixe aplicativos apenas pela loja oficial do celular e confira o nome do responsável.",
+    "call_to_action": "Responda: onde você deve procurar um aplicativo oficial?",
+    "expected_answer": "Na loja oficial do celular",
+    "image_filename": "infografico-09.png"
+  },
+  {
+    "order_number": 10,
+    "title": "Pare, pense e peça ajuda",
+    "objective": "Consolidar uma estratégia simples para situações digitais de risco.",
+    "message": "Você não precisa decidir com pressa. Quando algo parecer estranho: pare, pense, confirme por outro caminho e peça ajuda a alguém de confiança.",
+    "call_to_action": "Escreva o nome de uma pessoa de confiança que você pode procurar quando tiver dúvida.",
+    "expected_answer": "Nome de uma pessoa de confiança",
+    "image_filename": "infografico-10.png"
+  }
+]

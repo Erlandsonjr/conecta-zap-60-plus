@@ -1,0 +1,44 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+*.db
+*.sqlite3
+.idea/
+.vscode/
+dist/
+build/
+*.egg-info/
+# Ambiente virtual
+.venv/
+venv/
+
+# Configurações e credenciais
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Banco de dados local
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE e sistema
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log

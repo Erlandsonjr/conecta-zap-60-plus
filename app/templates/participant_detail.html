@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+<a class="back-link" href="/admin/participants">← Voltar para participantes</a>
+<section class="detail-header">
+  <div>
+    <p class="eyebrow">Participante #{{ participant.id }}</p>
+    <h1>{{ participant.name }}</h1>
+    <p>{{ participant.phone|mask_phone }} · Modo {{ participant.mode }}</p>
+  </div>
+  <div class="status-block">
+    {% if participant.completed_at %}<span class="badge success large">Trilha concluída</span>
+    {% elif participant.active %}<span class="badge active large">Envios ativos</span>
+    {% else %}<span class="badge neutral large">Envios pausados</span>{% endif %}
+    <small>Próximo envio: {{ participant.next_delivery_at|datetime }}</small>
+  </div>
+</section>
+
+{% if success %}<div class="alert success" role="status">{{ success }}</div>{% endif %}
+{% if error %}<div class="alert error" role="alert">{{ error }}</div>{% endif %}
+
+<section class="detail-grid">
+  <article class="panel progress-panel">
+    <div class="progress-ring" style="--progress: {{ participant.progress_percent }}"><strong>{{ participant.progress_count }}</strong><span>de 10</span></div>
+    <div><p class="eyebrow">Progresso</p><h2>{{ participant.progress_percent }}% concluído</h2><p>Consentimento: <strong>{{ "confirmado" if participant.consent_given else "pendente" }}</strong></p></div>
+  </article>
+  <article class="panel">
+    <p class="eyebrow">Ações</p><h2>Controlar envios</h2>
+    <div class="action-grid">
+      <form method="post" action="/admin/participants/{{ participant.id }}/send-next"><button class="button primary" type="submit">Enviar próxima</button></form>
+      <form method="post" action="/admin/participants/{{ participant.id }}/run-demo" data-confirm="Executar agora todas as pílulas restantes?"><button class="button secondary" type="submit">Executar demonstração</button></form>
+      {% if participant.active %}
+      <form method="post" action="/admin/participants/{{ participant.id }}/pause"><button class="button warning" type="submit">Pausar envios</button></form>
+      {% else %}
+      <form method="post" action="/admin/participants/{{ participant.id }}/resume"><button class="button secondary" type="submit">Retomar envios</button></form>
+      {% endif %}
+      <form method="post" action="/admin/participants/{{ participant.id }}/reset" data-confirm="Reiniciar a trilha removerá o histórico deste participante. Deseja continuar?"><button class="button danger" type="submit">Reiniciar trilha</button></form>
+    </div>
+  </article>
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><div><p class="eyebrow">Conteúdo</p><h2>Pílulas da trilha</h2></div></div>
+  <div class="pill-status-grid">
+    {% for pill in pills %}
+    <article class="pill-status {% if pill.id in sent_pill_ids %}sent{% endif %}">
+      <span class="pill-number">{{ pill.order_number }}</span>
+      <div><strong>{{ pill.title }}</strong><small>{{ "Enviada" if pill.id in sent_pill_ids else "Aguardando envio" }}</small></div>
+      {% if pill.id in sent_pill_ids %}
+      <form method="post" action="/admin/participants/{{ participant.id }}/resend/{{ pill.id }}" data-confirm="Reenviar a pílula {{ pill.order_number }}?"><button class="text-button" type="submit">Reenviar</button></form>
+      {% endif %}
+    </article>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><div><p class="eyebrow">Histórico</p><h2>Mensagens enviadas</h2></div></div>
+  {% if deliveries %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Data</th><th>Conteúdo</th><th>Provedor</th><th>Status</th><th>Identificador</th></tr></thead>
+      <tbody>
+      {% for delivery in deliveries %}
+      <tr>
+        <td>{{ delivery.sent_at|datetime }}</td>
+        <td>{{ ("Pílula " ~ delivery.pill.order_number ~ " — " ~ delivery.pill.title) if delivery.pill else "Mensagem do sistema" }}</td>
+        <td>{{ delivery.provider }}</td>
+        <td><span class="badge {{ 'success' if delivery.status in ['delivered', 'read'] else ('error' if delivery.status in ['failed', 'undelivered'] else 'neutral') }}">{{ delivery.status }}</span>{% if delivery.error_message %}<small>{{ delivery.error_message }}</small>{% endif %}</td>
+        <td><code>{{ delivery.provider_message_id or "—" }}</code></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}<div class="empty-state"><strong>Nenhuma mensagem enviada.</strong><p>O participante deve enviar INICIAR para registrar o consentimento.</p></div>{% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><div><p class="eyebrow">Interações</p><h2>Respostas recebidas</h2></div><span>{{ responses|length }} registro(s)</span></div>
+  {% if responses %}
+  <div class="response-list">
+    {% for response in responses %}
+    <article><div><strong>{{ response.received_at|datetime }}</strong><span>{{ "Pílula " ~ response.pill.order_number if response.pill else "Sem pílula relacionada" }}</span></div><p>{{ response.message_body }}</p>{% if response.media_url %}<a href="{{ response.media_url }}" rel="noopener noreferrer">Abrir mídia recebida</a>{% endif %}</article>
+    {% endfor %}
+  </div>
+  {% else %}<div class="empty-state"><strong>Nenhuma resposta recebida.</strong></div>{% endif %}
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><div><p class="eyebrow">Avaliação</p><h2>Feedbacks</h2></div><span>{{ participant.feedbacks|length }} registro(s)</span></div>
+  {% if participant.feedbacks %}
+  <div class="feedback-grid">
+    {% for feedback in participant.feedbacks|sort(attribute='created_at', reverse=true) %}
+    <article>
+      <strong>Compreensão: {{ feedback.easy_to_understand }}/5</strong>
+      <dl>
+        <div><dt>Aprendeu algo?</dt><dd>{{ "Sim" if feedback.learned_something else "Não" }}</dd></div>
+        <div><dt>Recomendaria?</dt><dd>{{ "Sim" if feedback.would_recommend else "Não" }}</dd></div>
+        <div><dt>Conteúdo mais útil</dt><dd>{{ feedback.most_useful_content }}</dd></div>
+        {% if feedback.additional_comment %}<div><dt>Comentário</dt><dd>{{ feedback.additional_comment }}</dd></div>{% endif %}
+      </dl>
+      <small>{{ feedback.created_at|datetime }}</small>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}<div class="empty-state"><strong>Nenhum feedback recebido.</strong></div>{% endif %}
+</section>
+{% endblock %}

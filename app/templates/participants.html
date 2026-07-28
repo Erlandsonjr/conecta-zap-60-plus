@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">Gestão da trilha</p><h1>Participantes</h1><p>Cadastre pessoas e acompanhe o progresso individual.</p></div>
+</section>
+
+{% if success %}<div class="alert success" role="status">{{ success }}</div>{% endif %}
+{% if error %}<div class="alert error" role="alert">{{ error }}</div>{% endif %}
+
+<section id="new-participant" class="panel form-panel">
+  <div><p class="eyebrow">Novo cadastro</p><h2>Cadastrar participante</h2><p>O telefone será salvo no formato internacional do Brasil.</p></div>
+  <form method="post" action="/admin/participants" class="participant-form">
+    <label>Nome completo<input name="name" autocomplete="name" minlength="2" maxlength="120" required></label>
+    <label>Telefone com DDD<input name="phone" type="tel" autocomplete="tel" placeholder="(11) 99999-9999" required></label>
+    <label>Modo<select name="mode"><option value="demo">Demonstração</option><option value="real">Real — a cada 24 horas</option></select></label>
+    <button class="button primary" type="submit">Cadastrar participante</button>
+  </form>
+</section>
+
+<section class="panel">
+  <div class="panel-heading"><div><p class="eyebrow">Lista completa</p><h2>{{ participants|length }} participante(s)</h2></div></div>
+  {% if participants %}
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Nome</th><th>Telefone</th><th>Consentimento</th><th>Situação</th><th>Progresso</th><th></th></tr></thead>
+      <tbody>
+      {% for participant in participants %}
+      <tr>
+        <td><strong>{{ participant.name }}</strong><small>Cadastrado em {{ participant.created_at|datetime }}</small></td>
+        <td>{{ participant.phone|mask_phone }}</td>
+        <td>{{ "Confirmado" if participant.consent_given else "Pendente" }}</td>
+        <td>
+          {% if participant.completed_at %}<span class="badge success">Concluído</span>
+          {% elif participant.active %}<span class="badge active">Ativo</span>
+          {% else %}<span class="badge neutral">Pausado</span>{% endif %}
+        </td>
+        <td><strong>{{ participant.progress_count }}/10</strong></td>
+        <td><a class="button secondary compact" href="/admin/participants/{{ participant.id }}">Abrir</a></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}<div class="empty-state"><strong>A lista está vazia.</strong></div>{% endif %}
+</section>
+{% endblock %}

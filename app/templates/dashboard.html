@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-heading">
+  <div>
+    <p class="eyebrow">Painel administrativo</p>
+    <h1>Visão geral do projeto</h1>
+    <p>Acompanhe o avanço dos participantes e os resultados da trilha.</p>
+  </div>
+  <a class="button primary" href="/admin/participants#new-participant">Cadastrar participante</a>
+</section>
+
+<section class="stats-grid" aria-label="Indicadores do projeto">
+  <article class="stat-card"><span>Participantes</span><strong>{{ stats.total }}</strong><small>Total cadastrado</small></article>
+  <article class="stat-card accent"><span>Ativos</span><strong>{{ stats.active }}</strong><small>Recebendo a trilha</small></article>
+  <article class="stat-card"><span>Concluíram</span><strong>{{ stats.completed }}</strong><small>{{ stats.completion_rate }}% de conclusão</small></article>
+  <article class="stat-card"><span>Pílulas enviadas</span><strong>{{ stats.pills_sent }}</strong><small>Envios sem falha</small></article>
+  <article class="stat-card"><span>Respostas</span><strong>{{ stats.responses }}</strong><small>Mensagens recebidas</small></article>
+  <article class="stat-card"><span>Feedbacks</span><strong>{{ stats.feedbacks }}</strong><small>Avaliações registradas</small></article>
+</section>
+
+<section class="panel">
+  <div class="panel-heading">
+    <div><p class="eyebrow">Acompanhamento</p><h2>Participantes recentes</h2></div>
+    <a href="/admin/participants">Ver todos</a>
+  </div>
+  {% if participants %}
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Participante</th><th>Telefone</th><th>Situação</th><th>Progresso</th><th></th></tr></thead>
+        <tbody>
+        {% for participant in participants %}
+          <tr>
+            <td><strong>{{ participant.name }}</strong><small>Modo {{ participant.mode }}</small></td>
+            <td>{{ participant.phone|mask_phone }}</td>
+            <td>
+              {% if participant.completed_at %}<span class="badge success">Concluído</span>
+              {% elif participant.active %}<span class="badge active">Ativo</span>
+              {% else %}<span class="badge neutral">Pausado</span>{% endif %}
+            </td>
+            <td>
+              <div class="progress-label"><span>{{ participant.progress_count }} de 10</span><span>{{ participant.progress_percent }}%</span></div>
+              <div class="progress" aria-label="{{ participant.progress_percent }}% concluído"><span style="width: {{ participant.progress_percent }}%"></span></div>
+            </td>
+            <td><a class="text-link" href="/admin/participants/{{ participant.id }}">Detalhes</a></td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="empty-state"><strong>Nenhum participante cadastrado.</strong><p>Cadastre a primeira pessoa para iniciar uma demonstração.</p></div>
+  {% endif %}
+</section>
+{% endblock %}
