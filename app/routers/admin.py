@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 from urllib.parse import quote
 
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -30,6 +31,19 @@ def format_datetime(value: datetime | None) -> str:
 
 templates.env.filters["mask_phone"] = mask_phone
 templates.env.filters["datetime"] = format_datetime
+
+STATIC_IMAGES_DIRECTORY = Path(__file__).resolve().parents[1] / "static" / "images"
+
+
+def has_pill_image(filename: str | None) -> bool:
+    if not filename:
+        return False
+    image_path = Path(filename)
+    return (
+        image_path.name == filename
+        and image_path.suffix.lower() == ".png"
+        and (STATIC_IMAGES_DIRECTORY / image_path.name).is_file()
+    )
 
 
 def get_participant_or_404(db: Session, participant_id: int) -> Participant:
@@ -232,8 +246,18 @@ def pills_page(
     db: Session = Depends(get_db),
 ) -> HTMLResponse:
     pills = list(db.scalars(select(Pill).order_by(Pill.order_number)))
+    available_image_filenames = {
+        pill.image_filename
+        for pill in pills
+        if has_pill_image(pill.image_filename)
+    }
     return templates.TemplateResponse(
         request=request,
         name="pills.html",
-        context={"request": request, "page_title": "Pílulas", "pills": pills},
+        context={
+            "request": request,
+            "page_title": "Pílulas",
+            "pills": pills,
+            "available_image_filenames": available_image_filenames,
+        },
     )

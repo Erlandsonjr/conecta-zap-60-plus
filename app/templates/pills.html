@@ -8,6 +8,15 @@
   <article class="pill-card">
     <div class="pill-card-head"><span>{{ "%02d"|format(pill.order_number) }}</span><span class="badge {{ 'active' if pill.active else 'neutral' }}">{{ "Ativa" if pill.active else "Inativa" }}</span></div>
     <h2>{{ pill.title }}</h2>
+    {% if pill.image_filename and pill.image_filename in available_image_filenames %}
+    <a class="pill-image-link" href="{{ url_for('static', path='images/' ~ pill.image_filename) }}" target="_blank" rel="noopener noreferrer">
+      <span class="pill-image-preview">
+        <img src="{{ url_for('static', path='images/' ~ pill.image_filename) }}" alt="Infográfico da pílula {{ pill.order_number }}: {{ pill.title }}" loading="lazy">
+      </span>
+    </a>
+    {% else %}
+    <div class="missing-infographic" role="status">Infográfico não encontrado</div>
+    {% endif %}
     <p><strong>Objetivo</strong>{{ pill.objective }}</p>
     <p><strong>Mensagem</strong>{{ pill.message }}</p>
     <div class="callout"><strong>Atividade</strong>{{ pill.call_to_action }}</div>

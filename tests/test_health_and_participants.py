@@ -43,4 +43,14 @@ def test_admin_pages_require_auth_and_render(admin_auth: tuple[str, str]) -> Non
     assert "Visão geral do projeto" in dashboard.text
     assert pills.status_code == 200
     assert "As 10 pílulas" in pills.text
+    for number in range(1, 11):
+        image_path = f"/static/images/infografico-{number:02d}.png"
+        assert image_path in pills.text
     assert participants.status_code == 200
+
+
+def test_infographic_is_available_from_static_mount() -> None:
+    with TestClient(app) as client:
+        response = client.get("/static/images/infografico-01.png")
+    assert response.status_code == 200
+    assert response.headers["content-type"] == "image/png"
